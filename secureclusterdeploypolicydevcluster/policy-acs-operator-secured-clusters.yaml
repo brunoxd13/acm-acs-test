@@ -64,7 +64,7 @@ spec:
                   namespace: stackrox
                   name: stackrox-secured-cluster-services
                 spec:
-                  clusterName: devcluster
+                  clusterName: cluster
                   auditLogs:
                     collection: Auto
                   centralEndpoint: central-stackrox.apps.cluster-ef15.ef15.example.opentlc.com:443
@@ -99,6 +99,3 @@ spec:
   clusterConditions:
     - status: "True"
       type: ManagedClusterConditionAvailable
-  clusterSelector:
-    matchExpressions:
-      - { key: env, operator: In, values: ["dev"] }
