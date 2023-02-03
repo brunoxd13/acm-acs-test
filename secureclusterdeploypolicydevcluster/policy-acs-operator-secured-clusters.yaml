@@ -1,12 +1,11 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-advanced-cluster-security-central
+  name: policy-advanced-managed-cluster-security
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
     policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
-  namespace: custom-policies
 spec:
   remediationAction: enforce
   disabled: false
@@ -15,7 +14,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: advanced-cluster-security-namespace
+          name: managed-cluster-security-ns
         spec:
           remediationAction: inform
           severity: high
@@ -30,7 +29,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: advanced-cluster-security-operator-subscription
+          name: managed-cluster-security-operator-sub
         spec:
           remediationAction: inform
           severity: high
@@ -52,7 +51,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: advanced-cluster-security-central
+          name: managed-cluster-security-endpoints
         spec:
           remediationAction: inform
           severity: high
@@ -60,54 +59,46 @@ spec:
             - complianceType: musthave
               objectDefinition:
                 apiVersion: platform.stackrox.io/v1alpha1
-                kind: Central
+                kind: SecuredCluster
                 metadata:
                   namespace: stackrox
-                  name: stackrox-central-services
+                  name: stackrox-secured-cluster-services
                 spec:
-                  central:
-                    exposure:
-                      loadBalancer:
-                        enabled: false
-                        port: 443
-                      nodePort:
-                        enabled: false
-                      route:
-                        enabled: true
-                    persistence:
-                      persistentVolumeClaim:
-                        claimName: stackrox-db
-                  egress:
-                    connectivityPolicy: Online
-                  scanner:
-                    analyzer:
-                      scaling:
-                        autoScaling: Enabled
-                        maxReplicas: 5
-                        minReplicas: 2
-                        replicas: 3
-                    scannerComponent: Enabled
+                  clusterName: devcluster
+                  auditLogs:
+                    collection: Auto
+                  centralEndpoint: central-stackrox.apps.cluster-ef15.ef15.example.opentlc.com:443
+                  admissionControl:
+                    listenOnCreates: false
+                    listenOnEvents: true
+                    listenOnUpdates: false
+                  perNode:
+                    collector:
+                      collection: KernelModule
+                      imageFlavor: Regular
+                    taintToleration: TolerateTaints
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-advanced-cluster-security-central
-  namespace: custom-policies
+  name: binding-policy-advanced-managed-cluster-security
 placementRef:
-  name: placement-policy-advanced-cluster-security-central
+  name: placement-policy-advanced-managed-cluster-security
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: policy-advanced-cluster-security-central
+  - name: policy-advanced-managed-cluster-security
     kind: Policy
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-advanced-cluster-security-central
-  namespace: custom-policies
+  name: placement-policy-advanced-managed-cluster-security
 spec:
   clusterConditions:
     - status: "True"
       type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - { key: env, operator: In, values: ["dev"] }
