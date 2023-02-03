@@ -99,3 +99,6 @@ spec:
   clusterConditions:
     - status: "True"
       type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - { key: child, operator: In, values: ["true"] }
