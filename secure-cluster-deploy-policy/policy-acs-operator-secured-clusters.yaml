@@ -67,7 +67,7 @@ spec:
                   clusterName: cluster
                   auditLogs:
                     collection: Auto
-                  centralEndpoint: central-stackrox.apps.cluster-ef15.ef15.example.opentlc.com:443
+                  centralEndpoint: central-stackrox.apps.cluster-gdlzq.gdlzq.sandbox991.opentlc.com:443
                   admissionControl:
                     listenOnCreates: false
                     listenOnEvents: true
