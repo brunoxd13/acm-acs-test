@@ -101,4 +101,7 @@ spec:
       type: ManagedClusterConditionAvailable
   clusterSelector:
     matchExpressions:
-      - { key: child, operator: In, values: ["true"] }
+      - key: acs-monitored
+        operator: In
+        values:
+          - true
