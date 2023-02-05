@@ -105,7 +105,3 @@ spec:
         operator: In
         values:
           - "true"
-      - key: name
-        operator: In
-        values:
-          - "hmg"
