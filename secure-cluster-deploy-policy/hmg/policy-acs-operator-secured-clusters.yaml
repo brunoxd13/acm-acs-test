@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-advanced-managed-cluster-security
+  name: policy-advanced-managed-cluster-security-hmg
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
@@ -81,27 +81,25 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-advanced-managed-cluster-security
+  name: binding-policy-advanced-managed-cluster-security-hmg
 placementRef:
-  name: placement-policy-advanced-managed-cluster-security
+  name: placement-policy-advanced-managed-cluster-security-hmg
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: policy-advanced-managed-cluster-security
+  - name: policy-advanced-managed-cluster-security-hmg
     kind: Policy
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-advanced-managed-cluster-security
+  name: placement-policy-advanced-managed-cluster-security-hmg
 spec:
   clusterConditions:
     - status: "True"
       type: ManagedClusterConditionAvailable
   clusterSelector:
     matchExpressions:
-      - key: acs-monitored
-        operator: In
-        values:
-          - "true"
+      - { key: acs-monitored, operator: In, values: ["true"] }
+      - { key: name, operator: In, values: ["hmg"] }
