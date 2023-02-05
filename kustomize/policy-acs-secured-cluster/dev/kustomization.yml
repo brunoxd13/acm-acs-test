@@ -1,0 +1,12 @@
+resources:
+- ../base
+
+namePrefix: dev-
+
+# patches:
+#   - patch: |-
+#       apiVersion: platform.stackrox.io/v1alpha1
+#       kind: SecuredCluster
+#       spec:
+#         clusterName: dev-cluster
+#         centralEndpoint: centalEndpoint-FOR_DEV_ENV

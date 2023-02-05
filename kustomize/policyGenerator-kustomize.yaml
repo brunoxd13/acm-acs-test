@@ -1,0 +1,10 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: policy-generator-kustomize
+policyDefaults:
+  namespace: my-policies
+policies:
+- name: policy-acs-secured-cluster
+  manifests:
+    - path: policy-acs-secured-cluster/
