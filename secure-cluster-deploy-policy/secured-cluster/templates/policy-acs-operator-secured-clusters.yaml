@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-advanced-managed-cluster-security-hmg
+  name: policy-advanced-managed-cluster-security
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
@@ -64,10 +64,10 @@ spec:
                   namespace: stackrox
                   name: stackrox-secured-cluster-services
                 spec:
-                  clusterName: cluster-child
+                  clusterName: {{ .Values.securedCluster.name }}
+                  centralEndpoint: {{ .Values.securedCluster.centralEndpoint }}
                   auditLogs:
                     collection: Auto
-                  centralEndpoint: central-stackrox.apps.cluster-gdlzq.gdlzq.sandbox991.opentlc.com:443
                   admissionControl:
                     listenOnCreates: false
                     listenOnEvents: true
@@ -81,20 +81,20 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-advanced-managed-cluster-security-hmg
+  name: binding-policy-advanced-managed-cluster-security
 placementRef:
-  name: placement-policy-advanced-managed-cluster-security-hmg
+  name: placement-policy-advanced-managed-cluster-security
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: policy-advanced-managed-cluster-security-hmg
+  - name: policy-advanced-managed-cluster-security
     kind: Policy
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-advanced-managed-cluster-security-hmg
+  name: placement-policy-advanced-managed-cluster-security
 spec:
   clusterConditions:
     - status: "True"
@@ -102,4 +102,3 @@ spec:
   clusterSelector:
     matchExpressions:
       - { key: acs-monitored, operator: In, values: ["true"] }
-      - { key: name, operator: In, values: ["hmg"] }

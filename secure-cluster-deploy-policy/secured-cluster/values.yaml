@@ -1,0 +1,3 @@
+securedCluster:
+  name: "cluster-hmg"
+  centralEndpoint: "central-stackrox.apps.cluster-gdlzq.gdlzq.sandbox991.opentlc.com:443"
