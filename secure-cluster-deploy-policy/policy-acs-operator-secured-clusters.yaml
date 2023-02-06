@@ -1,7 +1,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-advanced-managed-cluster-security-hmg
+  name: policy-acs-secured-cluster
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
@@ -64,7 +64,7 @@ spec:
                   namespace: stackrox
                   name: stackrox-secured-cluster-services
                 spec:
-                  clusterName: cluster-child
+                  clusterName: cluster-{{hub .ManagedClusterName hub}}
                   auditLogs:
                     collection: Auto
                   centralEndpoint: central-stackrox.apps.cluster-gdlzq.gdlzq.sandbox991.opentlc.com:443
@@ -81,20 +81,20 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-advanced-managed-cluster-security-hmg
+  name: binding-policy-acs-secured-cluster
 placementRef:
-  name: placement-policy-advanced-managed-cluster-security-hmg
+  name: placement-policy-acs-secured-cluster
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: policy-advanced-managed-cluster-security-hmg
+  - name: policy-acs-secured-cluster
     kind: Policy
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-advanced-managed-cluster-security-hmg
+  name: placement-policy-acs-secured-cluster
 spec:
   clusterConditions:
     - status: "True"
@@ -102,4 +102,3 @@ spec:
   clusterSelector:
     matchExpressions:
       - { key: acs-monitored, operator: In, values: ["true"] }
-      - { key: name, operator: In, values: ["hmg"] }
