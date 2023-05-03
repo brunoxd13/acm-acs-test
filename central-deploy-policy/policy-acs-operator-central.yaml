@@ -2,11 +2,11 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-advanced-cluster-security-central
+  namespace: custom-policies
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
     policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
-  namespace: custom-policies
 spec:
   remediationAction: enforce
   disabled: false
@@ -43,9 +43,9 @@ spec:
                   name: rhacs-operator
                   namespace: openshift-operators
                 spec:
+                  name: rhacs-operator
                   channel: latest
                   installPlanApproval: Automatic
-                  name: rhacs-operator
                   source: redhat-operators
                   sourceNamespace: openshift-marketplace
     - objectDefinition:
@@ -62,8 +62,8 @@ spec:
                 apiVersion: platform.stackrox.io/v1alpha1
                 kind: Central
                 metadata:
-                  namespace: stackrox
                   name: stackrox-central-services
+                  namespace: stackrox
                 spec:
                   central:
                     exposure:
@@ -91,10 +91,10 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-advanced-cluster-security-central
-  namespace: custom-policies
+  name: policy-advanced-cluster-security-central-placement
+  namespace: default
 placementRef:
-  name: placement-policy-advanced-cluster-security-central
+  name: policy-advanced-cluster-security-central-placement
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
@@ -105,8 +105,8 @@ subjects:
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-advanced-cluster-security-central
-  namespace: custom-policies
+  name: policy-advanced-cluster-security-central-placement
+  namespace: default
 spec:
   clusterConditions:
     - status: "True"

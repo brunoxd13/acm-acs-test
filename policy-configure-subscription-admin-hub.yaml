@@ -2,6 +2,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-configure-subscription-admin-hub
+  namespace: default
   annotations:
     policy.open-cluster-management.io/standards: NIST 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
@@ -53,20 +54,21 @@ spec:
                 metadata:
                   name: open-cluster-management:subscription-admin
                 roleRef:
+                  name: open-cluster-management:subscription-admin
                   apiGroup: rbac.authorization.k8s.io
                   kind: ClusterRole
-                  name: open-cluster-management:subscription-admin
                 subjects:
-                  - apiGroup: rbac.authorization.k8s.io
+                  - name: kube:admin
+                    apiGroup: rbac.authorization.k8s.io
                     kind: User
-                    name: kube:admin
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-configure-subscription-admin-hub
+  name: policy-configure-subscription-admin-hub-placement
+  namespace: default
 placementRef:
-  name: placement-policy-configure-subscription-admin-hub
+  name: policy-configure-subscription-admin-hub-placement
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
@@ -77,7 +79,8 @@ subjects:
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-configure-subscription-admin-hub
+  name: policy-configure-subscription-admin-hub-placement
+  namespace: default
 spec:
   clusterConditions:
     - status: "True"

@@ -2,6 +2,7 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-acs-secured-cluster
+  namespace: default
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
@@ -42,9 +43,9 @@ spec:
                   name: rhacs-operator
                   namespace: openshift-operators
                 spec:
+                  name: rhacs-operator
                   channel: latest
                   installPlanApproval: Automatic
-                  name: rhacs-operator
                   source: redhat-operators
                   sourceNamespace: openshift-marketplace
     - objectDefinition:
@@ -61,8 +62,8 @@ spec:
                 apiVersion: platform.stackrox.io/v1alpha1
                 kind: SecuredCluster
                 metadata:
-                  namespace: stackrox
                   name: stackrox-secured-cluster-services
+                  namespace: stackrox
                 spec:
                   clusterName: cluster-{{hub .ManagedClusterName hub}}
                   auditLogs:
@@ -81,9 +82,10 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-acs-secured-cluster
+  name: policy-acs-secured-cluster-placement
+  namespace: default
 placementRef:
-  name: placement-policy-acs-secured-cluster
+  name: policy-acs-secured-cluster-placement
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
@@ -94,11 +96,15 @@ subjects:
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-acs-secured-cluster
+  name: policy-acs-secured-cluster-placement
+  namespace: default
 spec:
   clusterConditions:
     - status: "True"
       type: ManagedClusterConditionAvailable
   clusterSelector:
     matchExpressions:
-      - { key: acs-monitored, operator: In, values: ["true"] }
+      - key: acs-monitored
+        operator: In
+        values:
+          - "true"
