@@ -82,7 +82,7 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: policy-acs-secured-cluster-placement
+  name: policy-acs-secured-cluster-placement-binding
   namespace: default
 placementRef:
   name: policy-acs-secured-cluster-placement

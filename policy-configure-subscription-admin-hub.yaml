@@ -65,7 +65,7 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: policy-configure-subscription-admin-hub-placement
+  name: policy-configure-subscription-admin-hub-placement-binding
   namespace: default
 placementRef:
   name: policy-configure-subscription-admin-hub-placement

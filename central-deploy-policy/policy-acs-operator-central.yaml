@@ -91,7 +91,7 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: policy-advanced-cluster-security-central-placement
+  name: policy-advanced-cluster-security-central-placement-binding
   namespace: default
 placementRef:
   name: policy-advanced-cluster-security-central-placement
