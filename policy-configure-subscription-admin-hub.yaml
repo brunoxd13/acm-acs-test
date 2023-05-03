@@ -82,6 +82,3 @@ spec:
   clusterConditions:
     - status: "True"
       type: ManagedClusterConditionAvailable
-  clusterSelector:
-    matchExpressions:
-      - { key: name, operator: In, values: ["local-cluster"] }
