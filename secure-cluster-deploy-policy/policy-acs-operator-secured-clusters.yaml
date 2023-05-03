@@ -99,6 +99,3 @@ spec:
   clusterConditions:
     - status: "True"
       type: ManagedClusterConditionAvailable
-  clusterSelector:
-    matchExpressions:
-      - { key: acs-monitored, operator: In, values: ["true"] }

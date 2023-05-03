@@ -111,9 +111,3 @@ spec:
   clusterConditions:
     - status: "True"
       type: ManagedClusterConditionAvailable
-  clusterSelector:
-    matchExpressions:
-      - key: acs-central
-        operator: In
-        values:
-          - "true"
